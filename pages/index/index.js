@@ -28,6 +28,7 @@ Page({
             },
             success:function(res){
               console.log(res)
+              wx.setStorageSync('token', res.data.token)
             }
           })
         } else {
@@ -35,16 +36,31 @@ Page({
         }
       }
     })
-    // wx.request({
-    //   url: baseUrl +'product/by_category?id=2',
-    //   method:'get',
-    //   success:function(res){
-    //     console.log(res)
-    //   },
-    //   fail:function(err){
-    //     console.log(err)
-    //   }
-    // })
+    
+  },
+  createOrder(){
+    var token = wx.getStorageSync('token');
+    var that = this;
+    wx.request({
+      url: baseUrl + 'order',
+      method: 'post',
+      header:{
+        token:token
+      },
+      data: {
+        products: [
+          {product_id:1,count:1},
+          {product_id:2,count:1},
+        ]
+      },
+      success: function (res) {
+        console.log(res)
+        
+      },
+      fail:function(err){
+        console.log('err'+err)
+      }
+    })
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
