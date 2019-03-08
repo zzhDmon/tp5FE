@@ -8,6 +8,7 @@
     </block>
     <button bindtap="bindGetToken"> 申请令牌 </button>
     <button bindtap="createOrder"> 生成订单 </button>
+    <button bindtap="pay"> 支付 </button>
   </view>
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>

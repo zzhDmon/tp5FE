@@ -62,6 +62,63 @@ Page({
       }
     })
   },
+  pay() {
+    var token = wx.getStorageSync('token');
+    var that = this;
+    wx.request({
+      url: baseUrl + 'order',
+      method: 'post',
+      header: {
+        token: token
+      },
+      data: {
+        products: [
+          { product_id: 1, count: 1 },
+          { product_id: 2, count: 1 },
+        ]
+      },
+      success: function (res) {
+        console.log(res)
+        wx.getStorageSync('order_id',res.data.order_id);
+        that.getPreOrder(token,res.data.order_id)
+      },
+      fail: function (err) {
+        console.log('err' + err)
+      }
+    })
+  },
+  getPreOrder(token,orderID){
+    if(token){
+      wx.request({
+        url: baseUrl + 'pay/pre_order',
+        method: 'post',
+        header: {
+          token: token
+        },
+        data: {
+          id:orderID
+        },
+        success: function (res) {
+          console.log(res.data)
+          // var preData = res.data;
+          // wx.requestPayment({
+          //   timeStamp: preData.timeStamp.toString(),
+          //   nonceStr: preData.nonceStr,
+          //   package: preData.package,
+          //   signType: preData.signType,
+          //   paySign: preData.paySign,
+          //   success:function(){
+
+          //   }
+          // })
+
+        },
+        fail: function (err) {
+          console.log('err' + err)
+        }
+      })
+    }
+  },
   onLoad: function () {
     if (app.globalData.userInfo) {
       this.setData({
